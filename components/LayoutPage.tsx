@@ -3,17 +3,18 @@ import ReactToPrint from 'react-to-print'
 import PrintComponent from './PrintComponent'
 import CustomerCard from './CustomerCard'
 import InputSearch from './InputSearch'
-import { dataValues } from '../ultilities/contants'
+import { dataValues, removeAccents } from '../ultilities/contants'
 import { ICustomerType } from '../ultilities/types'
 
 function LayoutPage(props) {
   let componentRef = useRef()
   const [currentUser, setCurrent] = useState<ICustomerType>()
+  const [query, setQuery] = useState('')
   return (
     <div className="min-h-screen h-screen flex flex-col">
       <div className="flex row items-center border-b border-indigo-500 p-2">
         <div className="flex flex-1">
-          <InputSearch />
+          <InputSearch value={query} onChange={(str) => setQuery(str)} />
         </div>
         <div className="flex flex-1 justify-end">
           <ReactToPrint
@@ -40,7 +41,14 @@ function LayoutPage(props) {
           />
         </div>
         <nav className="order-first w-[500px] p-2 overflow-y-auto">
-          {dataValues.map((cus, index) => (
+          {(query === ''
+            ? dataValues
+            : dataValues.filter((cus) =>
+                removeAccents(cus.name)
+                  .toLowerCase()
+                  .includes(removeAccents(query.toLowerCase()))
+              )
+          ).map((cus, index) => (
             <CustomerCard
               onSelect={() => setCurrent(cus)}
               key={index}

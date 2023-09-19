@@ -102,13 +102,21 @@ export const dataValues: ICustomerType[] = [
     address: 'Thạnh Mỹ Đơn Dương, Lâm Đồng'
   },
   {
-    name: 'Anh Việt',
-    phone: '0919.419.495',
-    address: 'Thạnh Mỹ Đơn Dương, Lâm Đồng'
-  },
-  {
     name: 'Chị Trang',
     phone: '0343.712.844',
     address: 'Phước Bình'
+  },
+  {
+    name: 'Chị Trang',
+    phone: '0937.414.848',
+    address: 'Bến Xe Liên Hương'
   }
 ]
+
+export function removeAccents(str: string): string {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+}

@@ -5,12 +5,12 @@ const PrintComponent = React.forwardRef((props, ref) => {
   const { name, phone, address } = props
   return (
     <div
-      className="w-[576px] max-h-[384px] h-[384px] bg-white border p-3"
+      className="w-[576px] max-h-[384px] h-[384px] flex flex-col justify-center items-center bg-white border"
       //@ts-ignore
       ref={ref}>
-      <p className="text-5xl text-center font-bold">{name || ''}</p>
-      <p className="text-5xl text-center font-medium">{phone || ''}</p>
-      <p className="text-5xl text-center">{address || ''}</p>
+      <p className="text-7xl text-center font-bold">{name || ''}</p>
+      <p className="text-5xl mt-[8px] text-center font-medium">{phone || ''}</p>
+      <p className="text-5xl mt-[8px] text-center px-[24px]">{address || ''}</p>
     </div>
   )
 })
