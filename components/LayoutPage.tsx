@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState } from 'react'
 import ReactToPrint from 'react-to-print'
 import PrintComponent from './PrintComponent'
@@ -5,11 +6,22 @@ import CustomerCard from './CustomerCard'
 import InputSearch from './InputSearch'
 import { dataValues, removeAccents } from '../ultilities/contants'
 import { ICustomerType } from '../ultilities/types'
+import { useAuthContext } from '../ultilities/AuthContext'
+import { useRouter } from 'next/router'
+import useAuthenticationLogic from '../ultilities/hooks'
 
 function LayoutPage(props) {
   let componentRef = useRef()
+  const { logOut } = useAuthenticationLogic()
   const [currentUser, setCurrent] = useState<ICustomerType>()
   const [query, setQuery] = useState('')
+  //@ts-ignore
+  const { user } = useAuthContext()
+  const router = useRouter()
+
+  React.useEffect(() => {
+    if (user == null) router.push('/login')
+  }, [user])
   return (
     <div className="min-h-screen h-screen flex flex-col">
       <div className="flex row items-center border-b border-indigo-500 p-2">
@@ -27,6 +39,12 @@ function LayoutPage(props) {
             )}
             content={() => componentRef.current}
           />
+          <button
+            onClick={logOut}
+            type="button"
+            className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
+            Thoát
+          </button>
         </div>
       </div>
 
