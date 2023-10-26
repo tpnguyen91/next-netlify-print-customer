@@ -103,13 +103,23 @@ export const dataValues: ICustomerType[] = [
   },
   {
     name: 'Chị Trang',
-    phone: '0343.712.844',
-    address: 'Phước Bình'
+    phone: '0343.712.178',
+    address: 'Đa Kia'
   },
   {
     name: 'Chị Trang',
     phone: '0937.414.848',
     address: 'Bến Xe Liên Hương'
+  },
+  {
+    name: 'Chị Nguyễn Thị Yến',
+    phone: '0934920161',
+    address: '155 Đống Đa,P. Thạch Thang, Q Hải Châu, Đà Nẵng'
+  },
+  {
+    name: 'Chị Linh',
+    phone: '0792082353',
+    address: 'Đà Lạt'
   }
 ]
 

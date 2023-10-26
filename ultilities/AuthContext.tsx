@@ -1,5 +1,6 @@
 import React from 'react'
 import { onAuthStateChanged, getAuth } from 'firebase/auth'
+
 import firebase_app from '../config'
 
 const auth = getAuth(firebase_app)
