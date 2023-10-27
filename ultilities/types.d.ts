@@ -12,3 +12,11 @@ export type ICustomerForm = {
   note: string
   address: string
 }
+
+export type IGHNOrderType = {
+  content?: string
+  order_code: string
+  to_address?: string
+  to_name?: string
+  to_phone?: string
+}

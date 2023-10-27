@@ -7,15 +7,25 @@ import {
 import React, { FC, useRef } from 'react'
 import ReactToPrint from 'react-to-print'
 import PrintComponent from '../PrintComponent'
-import { ICustomerType } from '../../../ultilities/types'
+import { ICustomerType, IGHNOrderType } from '../../../ultilities/types'
 import PrintForm from './PrintForm'
+import PrintGHNComponent from '../PrintGHNComponent'
 
 const DrawerBottomView: FC<{
+  typePrint?: 'customer' | 'GHN'
   open: boolean
   setOpen: (open: boolean) => void
-  setCustomer: (cus: ICustomerType) => void
-  currentCustomer: ICustomerType
-}> = ({ open, setOpen, currentCustomer, setCustomer }) => {
+  setCustomer?: (cus: ICustomerType) => void
+  currentCustomer?: ICustomerType
+  GHNItem?: IGHNOrderType
+}> = ({
+  open,
+  setOpen,
+  currentCustomer,
+  setCustomer,
+  typePrint = 'customer',
+  GHNItem
+}) => {
   const closeDrawerBottom = () => setOpen(false)
   let componentRef = useRef()
   return (
@@ -48,14 +58,27 @@ const DrawerBottomView: FC<{
           </svg>
         </IconButton>
       </div>
-      <PrintComponent
-        //@ts-ignore
-        name={currentCustomer?.name || ''}
-        phone={currentCustomer?.phone || ''}
-        address={currentCustomer?.address || ''}
-        ref={componentRef}
-      />
-      <PrintForm onChange={setCustomer} customer={currentCustomer} />
+      {typePrint === 'customer' ? (
+        <>
+          <PrintComponent
+            //@ts-ignore
+            name={currentCustomer?.name || ''}
+            phone={currentCustomer?.phone || ''}
+            address={currentCustomer?.address || ''}
+            ref={componentRef}
+          />
+          <PrintForm onChange={setCustomer} customer={currentCustomer} />
+        </>
+      ) : (
+        <PrintGHNComponent
+          //@ts-ignore
+          name={GHNItem?.to_name || ''}
+          code={GHNItem?.order_code || ''}
+          address={GHNItem?.to_address || ''}
+          ref={componentRef}
+        />
+      )}
+
       <div className="flex gap-2 mt-2">
         <Button onClick={closeDrawerBottom} size="sm" variant="outlined">
           Huỷ

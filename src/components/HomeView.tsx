@@ -4,15 +4,22 @@ import {
   MobileNav,
   Typography,
   Button,
-  IconButton
+  IconButton,
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel
 } from '@material-tailwind/react'
 import CustomersView from './Customer/CustomersView'
 import useAuthenticationLogic from '../hooks/useAuthenLogic'
+import useGHNDelivery from '../hooks/useGHNDelivery'
+import GHNView from './GHN/GHNView'
 
 export function HomeView() {
   const [openNav, setOpenNav] = React.useState(false)
   const { logOut } = useAuthenticationLogic()
-
+  const { fetchListWaitingPickup } = useGHNDelivery()
   React.useEffect(() => {
     window.addEventListener(
       'resize',
@@ -111,7 +118,24 @@ export function HomeView() {
         </MobileNav>
       </Navbar>
       <div className="mx-auto max-w-screen-lg pt-12">
-        <CustomersView />
+        <Tabs value="customer">
+          <TabsHeader>
+            <Tab key={'customer'} value={'customer'}>
+              Danh sách khách hàng
+            </Tab>
+            <Tab key={'ghn'} value={'ghn'}>
+              Giao hàng nhanh
+            </Tab>
+          </TabsHeader>
+          <TabsBody>
+            <TabPanel key={'customer'} value={'customer'}>
+              <CustomersView />
+            </TabPanel>
+            <TabPanel key={'ghn'} value={'ghn'}>
+              <GHNView />
+            </TabPanel>
+          </TabsBody>
+        </Tabs>
       </div>
     </div>
   )
