@@ -1,31 +1,28 @@
-import React, { useState } from 'react'
+import React, { FC, ReactNode, useState } from 'react'
 import {
   Navbar,
   MobileNav,
   Typography,
   Button,
-  IconButton,
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel
+  IconButton
 } from '@material-tailwind/react'
-import CustomersView from './Customer/CustomersView'
-import useAuthenticationLogic from '../hooks/useAuthenLogic'
-import useGHNDelivery from '../hooks/useGHNDelivery'
-import GHNView from './GHN/GHNView'
+import useAuthenticationLogic from '../../hooks/useAuthenLogic'
+import Link from 'next/link'
+import { routingPage } from '../../../ultilities/path'
+import { useRouter } from 'next/router'
 
-export function HomeView() {
+const DefaultLayout: FC<{ children: ReactNode }> = ({ children }) => {
+  const router = useRouter()
   const [openNav, setOpenNav] = React.useState(false)
   const { logOut } = useAuthenticationLogic()
-  const { fetchListWaitingPickup } = useGHNDelivery()
   React.useEffect(() => {
     window.addEventListener(
       'resize',
       () => window.innerWidth >= 960 && setOpenNav(false)
     )
   }, [])
+
+  console.log('router.pathname', router.pathname)
 
   const navList = (
     <>
@@ -34,10 +31,16 @@ export function HomeView() {
           as="li"
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal text-lg hover:underline hover:text-blue-500">
-          <a href="#" className="flex items-center">
-            Danh sách khách hàng
-          </a>
+          className={`p-1 font-normal text-lg ${
+            router.pathname === routingPage.CUSTOMER_PAGE
+              ? 'text-blue-500 underline font-bold'
+              : ''
+          }`}>
+          <Link href={routingPage.CUSTOMER_PAGE}>
+            <a href="#" className="flex items-center">
+              Danh sách khách hàng
+            </a>
+          </Link>
         </Typography>
       </ul>
       <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -45,10 +48,16 @@ export function HomeView() {
           as="li"
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal text-lg hover:underline hover:text-blue-500">
-          <a href="#" className="flex items-center">
-            Giao hàng nhanh
-          </a>
+          className={`p-1 font-normal text-lg ${
+            router.pathname === routingPage.GHN_PAGE
+              ? 'text-blue-500 underline font-bold'
+              : ''
+          }`}>
+          <Link href={routingPage.GHN_PAGE}>
+            <a href="#" className="flex items-center">
+              Giao hàng nhanh
+            </a>
+          </Link>
         </Typography>
       </ul>
     </>
@@ -130,28 +139,9 @@ export function HomeView() {
           </Button>
         </MobileNav>
       </Navbar>
-      <div className="mx-auto mx-8 pt-12">
-        <CustomersView />
-        {/* 
-        <Tabs value="customer">
-          <TabsHeader>
-            <Tab key={'customer'} value={'customer'}>
-              Danh sách khách hàng
-            </Tab>
-            <Tab key={'ghn'} value={'ghn'}>
-              Giao hàng nhanh
-            </Tab>
-          </TabsHeader>
-          <TabsBody>
-            <TabPanel key={'customer'} value={'customer'}>
-              <CustomersView />
-            </TabPanel>
-            <TabPanel key={'ghn'} value={'ghn'}>
-              <GHNView />
-            </TabPanel>
-          </TabsBody>
-        </Tabs> */}
-      </div>
+      <div className="mx-8 pt-12">{children}</div>
     </div>
   )
 }
+
+export default DefaultLayout

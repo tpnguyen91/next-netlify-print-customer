@@ -10,8 +10,13 @@ export function middleware(req) {
     if (!pathname.startsWith(routingPage.LOGIN_PAGE)) {
       return NextResponse.redirect(new URL(routingPage.LOGIN_PAGE, req.url))
     }
-  } else if (pathname.startsWith(routingPage.LOGIN_PAGE)) {
-    return NextResponse.redirect(new URL(routingPage.HOME_PAGE, req.url))
+  } else {
+    if (
+      pathname === routingPage.HOME_PAGE ||
+      pathname.startsWith(routingPage.LOGIN_PAGE)
+    ) {
+      return NextResponse.redirect(new URL(routingPage.CUSTOMER_PAGE, req.url))
+    }
   }
 
   return NextResponse.next()

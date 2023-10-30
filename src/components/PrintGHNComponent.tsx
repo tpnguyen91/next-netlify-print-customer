@@ -1,8 +1,9 @@
 import * as React from 'react'
+import Barcode from 'react-barcode'
 
 const PrintGHNComponent = React.forwardRef((props, ref) => {
   //@ts-ignore
-  const { code, name, address } = props
+  const { code, name, address, content } = props
   const getLocation = () => {
     const locations = address.split(',')
     if (locations.length >= 3) {
@@ -18,14 +19,13 @@ const PrintGHNComponent = React.forwardRef((props, ref) => {
   return (
     <div className="border">
       <div
-        className="w-[576px] max-h-[384px] flex flex-col items-center bg-white overflow-hidden"
+        className="w-[576px] max-h-[384px] h-[380px] flex flex-col items-center justify-center bg-white overflow-hidden"
         //@ts-ignore
         ref={ref}>
         <p className="text-7xl text-center font-bold mt-10">{name || ''}</p>
-        <p className="text-5xl mt-[8px] text-center font-medium">
-          {code || ''}
-        </p>
-        <p className="text-xl mt-[8px] text-center px-[24px]">
+        <p className="text-md mt-1">({content || ''})</p>
+        <Barcode format="CODE128" height={50} value={code} />
+        <p className="text-4xl mt-[8px] text-center px-[24px]">
           {getLocation()}
         </p>
       </div>

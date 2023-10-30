@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import useCustomerCRUDLogic from '../../hooks/useCustomerCRUDLogic'
 import { ICustomerForm, ICustomerType } from '../../../ultilities/types'
 import {
@@ -75,6 +75,16 @@ function CustomersView(props) {
     })
   }
 
+  const listDataCustomer = useMemo(() => {
+    return query === ''
+      ? listData
+      : listData.filter((cus) =>
+          removeAccents(cus.name)
+            .toLowerCase()
+            .includes(removeAccents(query.toLowerCase()))
+        )
+  }, [query, listData])
+
   const onActionTrigger = (
     data: ICustomerType,
     type: 'Print' | 'Edit' | 'Delete'
@@ -100,7 +110,7 @@ function CustomersView(props) {
           <div className="mb-4 mt-2 flex flex-col justify-between gap-8 md:flex-row md:items-center">
             <div>
               <Typography variant="h5" color="blue-gray">
-                DANH SÁCH KHÁCH HÀNG
+                DANH SÁCH KHÁCH HÀNG ({listDataCustomer.length})
               </Typography>
             </div>
             <div className="flex w-full shrink-0 gap-2 md:w-max">
@@ -151,14 +161,7 @@ function CustomersView(props) {
               </tr>
             </thead>
             <tbody>
-              {(query === ''
-                ? listData
-                : listData.filter((cus) =>
-                    removeAccents(cus.name)
-                      .toLowerCase()
-                      .includes(removeAccents(query.toLowerCase()))
-                  )
-              ).map(({ name, phone, address, note, id }) => (
+              {listDataCustomer.map(({ name, phone, address, note, id }) => (
                 <tr key={id} className="even:bg-blue-gray-50/50">
                   <td className="p-4">
                     <Typography

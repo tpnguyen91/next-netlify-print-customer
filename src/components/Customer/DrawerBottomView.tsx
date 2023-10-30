@@ -75,6 +75,7 @@ const DrawerBottomView: FC<{
           name={GHNItem?.to_name || ''}
           code={GHNItem?.order_code || ''}
           address={GHNItem?.to_address || ''}
+          content={GHNItem?.content || ''}
           ref={componentRef}
         />
       )}
