@@ -1,15 +1,29 @@
 import {
   Button,
   Drawer,
+  Option,
   IconButton,
+  Select,
   Typography
 } from '@material-tailwind/react'
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import ReactToPrint from 'react-to-print'
 import PrintComponent from '../PrintComponent'
 import { ICustomerType, IGHNOrderType } from '../../../ultilities/types'
 import PrintForm from './PrintForm'
 import PrintGHNComponent from '../PrintGHNComponent'
+import PrintComponentFrom from '../PrintComponentFrom'
+
+const TemplatePrinters = [
+  {
+    id: 0,
+    name: 'Mẫu mặc dịnh'
+  },
+  {
+    id: 1,
+    name: 'Mẫu có người nhận & gửi'
+  }
+]
 
 const DrawerBottomView: FC<{
   typePrint?: 'customer' | 'GHN'
@@ -28,6 +42,8 @@ const DrawerBottomView: FC<{
 }) => {
   const closeDrawerBottom = () => setOpen(false)
   let componentRef = useRef()
+  const [template, setTemplate] = useState(TemplatePrinters[0].id.toString())
+  console.log({ template })
   return (
     <Drawer
       size={620}
@@ -60,13 +76,35 @@ const DrawerBottomView: FC<{
       </div>
       {typePrint === 'customer' ? (
         <>
-          <PrintComponent
-            //@ts-ignore
-            name={currentCustomer?.name || ''}
-            phone={currentCustomer?.phone || ''}
-            address={currentCustomer?.address || ''}
-            ref={componentRef}
-          />
+          <div className="w-72 mb-2">
+            <Select
+              onChange={(e) => setTemplate(e)}
+              value={template}
+              label={TemplatePrinters[Number(template)].name}>
+              {TemplatePrinters.map((i) => (
+                <Option value={i.id.toString()} key={i.id}>
+                  {i.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+          {template === '0' ? (
+            <PrintComponent
+              //@ts-ignore
+              name={currentCustomer?.name || ''}
+              phone={currentCustomer?.phone || ''}
+              address={currentCustomer?.address || ''}
+              ref={componentRef}
+            />
+          ) : (
+            <PrintComponentFrom
+              //@ts-ignore
+              name={currentCustomer?.name || ''}
+              phone={currentCustomer?.phone || ''}
+              address={currentCustomer?.address || ''}
+              ref={componentRef}
+            />
+          )}
           <PrintForm onChange={setCustomer} customer={currentCustomer} />
         </>
       ) : (
