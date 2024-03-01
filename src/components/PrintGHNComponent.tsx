@@ -22,7 +22,9 @@ const PrintGHNComponent = React.forwardRef((props, ref) => {
         className="w-[576px] max-h-[384px] h-[380px] flex flex-col items-center justify-center bg-white overflow-hidden"
         //@ts-ignore
         ref={ref}>
-        <p className="text-7xl text-center font-bold mt-10">{name || ''}</p>
+        <p className="text-7xl text-center font-bold mt-10">
+          {(name || '').toUpperCase()}
+        </p>
         <p className="text-md mt-1">({content || ''})</p>
         <Barcode format="CODE128" height={50} value={code} />
         <p className="text-4xl mt-[8px] text-center px-[24px]">

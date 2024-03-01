@@ -20,12 +20,15 @@ const PrintComponentFrom = React.forwardRef((props, ref) => {
           <div className="w-[100px] underline">Người nhận:</div>
           <div className="">
             <div>
-              <p className="font-bold text-[50px]">{name}</p>
+              <p className="font-bold text-4xl">{name.toUpperCase()}</p>
               <p className="font-medium text-5xl">{phone}</p>
             </div>
-            <div className="font-medium text-[30px]">{address}</div>
+            <div className="font-medium text-2xl">{address}</div>
           </div>
         </div>
+        <p className="text-lg font-bold mt-[8px] text-center px-[24px]">
+          ** HÀNG THỰC PHẨM, VUI LÒNG GIAO GẤP. CẢM ƠN **
+        </p>
       </div>
     </div>
   )
