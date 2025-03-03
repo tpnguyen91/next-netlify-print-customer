@@ -23,8 +23,8 @@ const CustomerForm: FC<{
   return (
     <Card className="mx-auto w-full transparent shadow-none">
       <form ref={formRef} onSubmit={handleSubmit(onSubmitForm)}>
-        <div className="grid gap-4 mb-4 sm:grid-cols-2">
-          <div>
+        <div className="grid gap-4 w-full mb-4 grid-cols-1 md:grid-cols-2">
+          <div className="sm:col-span-2">
             <Input
               color="blue"
               crossOrigin="anonymous"
@@ -33,7 +33,7 @@ const CustomerForm: FC<{
               error={!!errors.name}
             />
           </div>
-          <div>
+          <div className="sm:col-span-2">
             <Input
               color="blue"
               crossOrigin="anonymous"

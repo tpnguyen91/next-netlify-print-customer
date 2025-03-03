@@ -17,7 +17,7 @@ const useCustomerCRUDLogic = () => {
     const querySnapshot = await getDocs(collection(db, ENUM_TABLES.CUSTOMERS))
     let listValues = []
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data())
+      // console.log(doc.id, ' => ', doc.data())
       listValues.push({ id: doc.id, ...doc.data() })
     })
     return Promise.resolve(listValues)
