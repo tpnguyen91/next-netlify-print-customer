@@ -14,7 +14,13 @@ import {
   Input,
   Typography
 } from '@material-tailwind/react'
-import { FileSignature, Printer, Trash2, UserPlusIcon } from 'lucide-react'
+import {
+  Copy,
+  FileSignature,
+  Printer,
+  Trash2,
+  UserPlusIcon
+} from 'lucide-react'
 import CustomerForm from './CustomerForm'
 import { PencilIcon } from '@heroicons/react/24/solid'
 import {
@@ -192,6 +198,15 @@ function CustomersView(props) {
                 </Td>
                 <Td className="p-4">
                   <div className="flex gap-4">
+                    <IconButton
+                      color="green"
+                      onClick={() => {
+                        let content = `${name} \n ${phone} \n ${address}`
+                        navigator.clipboard.writeText(content)
+                      }}
+                      className="rounded-full  hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
+                      <Copy color="white" size={16} />
+                    </IconButton>
                     <IconButton
                       color="amber"
                       onClick={() => {
