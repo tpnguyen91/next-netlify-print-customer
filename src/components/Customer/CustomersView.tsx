@@ -14,7 +14,13 @@ import {
   Input,
   Typography
 } from '@material-tailwind/react'
-import { FileSignature, Printer, Trash2, UserPlusIcon } from 'lucide-react'
+import {
+  Copy,
+  FileSignature,
+  Printer,
+  Trash2,
+  UserPlusIcon
+} from 'lucide-react'
 import CustomerForm from './CustomerForm'
 import { PencilIcon } from '@heroicons/react/24/solid'
 import {
@@ -27,8 +33,10 @@ import CustomerCreateView from './CustomerCreateView'
 import CustomerEditView from './CustomerEditView'
 import { dataValues, removeAccents } from '../../../ultilities/contants'
 import DrawerBottomView from './DrawerBottomView'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import { isMobile } from 'react-device-detect'
 
-const TABLE_HEAD = ['Tên Khách hàng', 'SĐT', 'Địa chỉ', 'Ghi chú', '']
+const TABLE_HEAD = ['Tên', 'SĐT', 'Địa chỉ', 'Ghi chú', '']
 
 function CustomersView(props) {
   const [openShowConfirmDelete, setOpenShowConfirmDelete] = useState(false)
@@ -53,7 +61,6 @@ function CustomersView(props) {
   }
 
   const onDeleteCustomer = () => {
-    console.log({ customer })
     deleteCustomer(customer.id).finally(() => {
       onFetchListCustomer()
       setCustomer(undefined)
@@ -146,100 +153,102 @@ function CustomersView(props) {
             </div>
           </div>
         </CardHeader>
-        <CardBody className="overflow-y-scroll px-0 max-h-[600px]">
-          <table className="w-full min-w-max table-auto text-left">
-            <thead>
-              <tr>
-                {TABLE_HEAD.map((head) => (
-                  <th
-                    key={head}
-                    className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal leading-none opacity-70">
-                      {head}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {listDataCustomer.map(({ name, phone, address, note, id }) => (
-                <tr key={id} className="even:bg-blue-gray-50/50">
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal">
-                      {name}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal">
-                      {phone}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal">
-                      {address}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal">
-                      {note}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex gap-4">
-                      <IconButton
-                        color="amber"
-                        onClick={() => {
-                          setCustomer({ name, phone, address, note, id })
-                          setTimeout(() => {
-                            setOpenDrawer(true)
-                          }, 500)
-                        }}
-                        className="rounded-full  hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
-                        <Printer color="white" size={16} />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          setCustomer({ name, phone, address, note, id })
-                          setTimeout(() => {
-                            setOpenEditModal(true)
-                          }, 500)
-                        }}
-                        className="rounded-full bg-[#1DA1F2] hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
-                        <FileSignature color="white" size={16} />
-                      </IconButton>
-                      <IconButton
-                        color="red"
-                        onClick={() => {
-                          setCustomer({ name, phone, address, note, id })
-                          setTimeout(() => {
-                            setOpenShowConfirmDelete(true)
-                          }, 500)
-                        }}
-                        className="rounded-full hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
-                        <Trash2 color="white" size={16} />
-                      </IconButton>
-                    </div>
-                  </td>
-                </tr>
+        <Table>
+          <Thead>
+            <Tr>
+              {TABLE_HEAD.map((name, index) => (
+                <Th
+                  className={`${name === 'Ghi chú' ? 'text-left' : ''}`}
+                  key={index}>
+                  {name}
+                </Th>
               ))}
-            </tbody>
-          </table>
-        </CardBody>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {listDataCustomer.map(({ name, phone, address, note, id }) => (
+              <Tr key={id} className="even:bg-blue-gray-50/50">
+                <Td className="p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal">
+                    {name}
+                  </Typography>
+                </Td>
+                <Td className="p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className={`font-normal ${!isMobile ? 'text-center' : ''}`}>
+                    {phone}
+                  </Typography>
+                </Td>
+                <Td className="p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal">
+                    {address}
+                  </Typography>
+                </Td>
+                <Td className="p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal">
+                    {note}
+                  </Typography>
+                </Td>
+                <Td className="p-4">
+                  <div className="flex gap-4">
+                    <IconButton
+                      color="green"
+                      onClick={() => {
+                        let content = `${name} \n ${phone} \n ${address}`
+                        navigator.clipboard.writeText(content)
+                      }}
+                      className="rounded-full  hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
+                      <Copy color="white" size={16} />
+                    </IconButton>
+                    <IconButton
+                      color="amber"
+                      onClick={() => {
+                        setCustomer({ name, phone, address, note, id })
+                        setTimeout(() => {
+                          setOpenDrawer(true)
+                        }, 500)
+                      }}
+                      className="rounded-full  hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
+                      <Printer color="white" size={16} />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        setCustomer({ name, phone, address, note, id })
+                        setTimeout(() => {
+                          setOpenEditModal(true)
+                        }, 500)
+                      }}
+                      className="rounded-full bg-[#1DA1F2] hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
+                      <FileSignature color="white" size={16} />
+                    </IconButton>
+                    <IconButton
+                      color="red"
+                      onClick={() => {
+                        setCustomer({ name, phone, address, note, id })
+                        setTimeout(() => {
+                          setOpenShowConfirmDelete(true)
+                        }, 500)
+                      }}
+                      className="rounded-full hover:shadow-[#1DA1F2]/20 focus:shadow-[#1DA1F2]/20 active:shadow-[#1DA1F2]/10">
+                      <Trash2 color="white" size={16} />
+                    </IconButton>
+                  </div>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
       </Card>
       <NotificationDialog
         onSubmit={onDeleteCustomer}

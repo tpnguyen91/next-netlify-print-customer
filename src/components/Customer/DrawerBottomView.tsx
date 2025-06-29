@@ -43,7 +43,6 @@ const DrawerBottomView: FC<{
   const closeDrawerBottom = () => setOpen(false)
   let componentRef = useRef()
   const [template, setTemplate] = useState(TemplatePrinters[0].id.toString())
-  console.log({ template })
   return (
     <Drawer
       size={620}
