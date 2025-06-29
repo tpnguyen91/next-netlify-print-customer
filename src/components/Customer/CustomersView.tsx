@@ -78,10 +78,14 @@ function CustomersView(props) {
   const listDataCustomer = useMemo(() => {
     return query === ''
       ? listData
-      : listData.filter((cus) =>
-          removeAccents(cus.name)
-            .toLowerCase()
-            .includes(removeAccents(query.toLowerCase()))
+      : listData.filter(
+          (cus) =>
+            removeAccents(cus.name)
+              .toLowerCase()
+              .includes(removeAccents(query.toLowerCase())) ||
+            removeAccents(cus.phone)
+              .toLowerCase()
+              .includes(removeAccents(query.toLowerCase()))
         )
   }, [query, listData])
 
