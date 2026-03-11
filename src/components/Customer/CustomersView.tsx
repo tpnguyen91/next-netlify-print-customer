@@ -43,7 +43,7 @@ function CustomersView(props) {
   const [openCreateModal, setOpenCreateModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState(false)
   const [customer, setCustomer] = useState<ICustomerType>()
-  const [listData, setListData] = useState([])
+  const [listData, setListData] = useState<ICustomerType[]>([])
   const [openDrawer, setOpenDrawer] = useState(false)
   const formRef = useRef<UseFormProps & any>()
   const [query, setQuery] = useState('')
@@ -52,15 +52,19 @@ function CustomersView(props) {
 
   useEffect(() => {
     onFetchListCustomer()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onFetchListCustomer = () => {
-    getAllCustomers().then((rs) => {
-      setListData(rs)
-    })
+  console.log({ customer })
+
+  const onFetchListCustomer = async () => {
+    const rs = await getAllCustomers()
+    setListData(rs)
   }
 
-  const onDeleteCustomer = () => {
+  const onDeleteCustomer = async () => {
+    if (!customer?.id) return
+
     deleteCustomer(customer.id).finally(() => {
       onFetchListCustomer()
       setCustomer(undefined)
@@ -76,6 +80,8 @@ function CustomersView(props) {
   }
 
   const onEditCustomer = (data: ICustomerForm) => {
+    if (!customer?.id) return
+
     updateCustomer(data, customer.id).finally(() => {
       onFetchListCustomer()
       setOpenEditModal(false)

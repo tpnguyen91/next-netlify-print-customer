@@ -31,3 +31,9 @@ yarn-error.log*
 .env
 # Local Netlify folder
 .netlify
+
+# local secrets and migration artifacts
+firebase-key.json
+firebase-export-*.json
+scripts/full-migration.sql
+/scripts
