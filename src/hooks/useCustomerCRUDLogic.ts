@@ -1,41 +1,71 @@
-import firebase_app from '../../config'
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc
-} from 'firebase/firestore'
+import supabase from '../../supabase'
 import { ICustomerType } from '../../ultilities/types'
 import { ENUM_TABLES } from '../../ultilities/enum'
 
 const useCustomerCRUDLogic = () => {
-  const db = getFirestore(firebase_app)
   const getAllCustomers = async () => {
-    const querySnapshot = await getDocs(collection(db, ENUM_TABLES.CUSTOMERS))
-    let listValues = []
-    querySnapshot.forEach((doc) => {
-      // console.log(doc.id, ' => ', doc.data())
-      listValues.push({ id: doc.id, ...doc.data() })
-    })
-    return Promise.resolve(listValues)
+    const { data, error } = await supabase
+      .from(ENUM_TABLES.CUSTOMERS)
+      .select('id, name, phone, address, note')
+
+    if (error) {
+      throw error
+    }
+
+    return data || []
   }
 
   const addNewCustomer = async (customer: ICustomerType) => {
-    return await addDoc(collection(db, ENUM_TABLES.CUSTOMERS), customer)
+    const { data, error } = await supabase
+      .from(ENUM_TABLES.CUSTOMERS)
+      .insert({
+        name: customer.name,
+        phone: customer.phone,
+        address: customer.address,
+        note: customer.note || null
+      })
+      .select('id')
+      .single()
+
+    if (error) {
+      throw error
+    }
+
+    return data
   }
 
   const updateCustomer = async (customer: ICustomerType, id: string) => {
-    const docRef = doc(db, ENUM_TABLES.CUSTOMERS, id)
-    return await updateDoc(docRef, {
-      ...customer
-    })
+    const { data, error } = await supabase
+      .from(ENUM_TABLES.CUSTOMERS)
+      .update({
+        name: customer.name,
+        phone: customer.phone,
+        address: customer.address,
+        note: customer.note || null,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select('id')
+      .single()
+
+    if (error) {
+      throw error
+    }
+
+    return data
   }
 
   const deleteCustomer = async (id: string) => {
-    return await deleteDoc(doc(db, ENUM_TABLES.CUSTOMERS, id))
+    const { error } = await supabase
+      .from(ENUM_TABLES.CUSTOMERS)
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      throw error
+    }
+
+    return true
   }
 
   return {
